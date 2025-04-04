@@ -1,167 +1,119 @@
-# Product_Catalog_API
+# 📦 Product Catalog API  
+_A RESTful API for managing product catalogs, including categories, products, and variants._  
 
-API for E commerce app from Requirement document
+![API Preview](https://via.placeholder.com/1200x400?text=Product+Catalog+API)  
 
-[Requirement document](./requirements.md)
+## 🚀 Getting Started  
 
-
-### post man for API end points map
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/30ef984c008334ca9696?action=collection%2Fimport)
-
-
-### prepare local docker instance for mysql
-
-```shell
- docker run --name mysql1 -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root  mysql:latest
+### 1️⃣ Installation  
+Clone the repository and install dependencies:  
+```sh
+git clone https://github.com/munyaneza-w/Product-Catalog-API.git
+cd Product-Catalog-API
+npm install
 ```
 
-[//]: # ([How to create oracle docker image]&#40;https://github.com/oracle/docker-images/tree/main/OracleDatabase/SingleInstance&#41;)
+### 2️⃣ Running the Server  
+Start the development server:  
+```sh
+npm start
+```
+Product Catalog API runs on: `http://localhost:3001`
 
-[//]: # ()
-[//]: # (```shell)
+---
 
-[//]: # ( docker run --name oracle19 )
+## 📜 API Documentation  
+Swagger documentation is available at:  
+[http://localhost:3001/api-docs](http://localhost:3001/api-docs)  
 
-[//]: # ( -p 1521:1521 -p 5500:5500 )
+You can explore available endpoints, parameters, and response formats.
 
-[//]: # ( -e ORACLE_PWD=system )
+---
 
-[//]: # ( -v E:/docker/oraclexedatabase:/opt/oracle/oradata )
+## 📌 Key Features  
 
-[//]: # ( 6ca1a57e059ad388721234dbcacfcb2e1bd3c60c140ed2a24be32a9e99d1d504)
+✅ **Product Management** - CRUD operations for products  
+✅ **Category Management** - Organize products into categories  
+✅ **Search & Filtering** - Search by name, category, price, etc.  
+✅ **Inventory Tracking** - Monitor stock levels  
+✅ **Swagger Documentation** - Interactive API docs  
 
-[//]: # (#last number is the image id )
+---
 
-[//]: # (```)
-### database config 
-modify the properties file
+## 🔥 Endpoints Overview  
 
-```properties
-spring.datasource.username=root
-spring.datasource.password=root
-spring.datasource.url=jdbc:mysql://127.0.0.1:3306/product_catalog_api
+## System Architecture
+
+### Entity Relationship Diagram  
+![Entity Diagram](images/entity%20diagram.png)
+
+### Class Diagram  
+![Class Diagram](images/product_catalog_api_class_diagram.png)
+
+### API Endpoints  
+![API Endpoints](images/endpoints.png)
+
+
+### **Products**  
+| Method | Endpoint          | Description                     |
+|--------|------------------|---------------------------------|
+| GET    | `/api/products`  | Fetch all products             |
+| POST   | `/api/products`  | Add a new product              |
+| GET    | `/api/products/:id` | Get a product by ID           |
+| PUT    | `/api/products/:id` | Update a product              |
+| DELETE | `/api/products/:id` | Remove a product              |
+
+### **Categories**  
+| Method | Endpoint           | Description                  |
+|--------|-------------------|------------------------------|
+| GET    | `/api/categories` | Get all categories           |
+| POST   | `/api/categories` | Create a new category        |
+
+---
+
+## 📌 Example Request  
+
+### Fetching Products
+```sh
+GET /api/products?search=gaming&minPrice=50&maxPrice=200&category=electronics
+```
+📌 **Example JSON Response**  
+```json
+[
+  {
+    "id": 1,
+    "name": "Gaming Mouse",
+    "category": "Electronics",
+    "price": 59.99,
+    "stock": 100
+  }
+]
 ```
 
-[//]: # (```properties)
+---
 
-[//]: # (spring.datasource.url=jdbc:oracle:thin:@localhost:1521:xe)
+## 🛠 Technologies Used  
+- **Node.js** & **Express.js** - Backend framework  
+- **MongoDB** (or SQL alternative) - Database  
+- **Swagger** - API documentation  
 
-[//]: # (spring.datasource.username=system)
+---
 
-[//]: # (spring.datasource.password=system)
+## 📖 License  
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
-[//]: # (```)
-### project entity diagram
+---
 
-![entity diagram](./images/entity%20diagram.png)
+## 🤝 Contributing  
+Want to contribute? Follow these steps:  
+1. Fork the repository  
+2. Create a new branch (`git checkout -b feature-name`)  
+3. Commit your changes (`git commit -m "Add feature"`)  
+4. Push to your branch (`git push origin feature-name`)  
+5. Open a Pull Request  
 
-### database ERD
+---
 
-![ERD](./images/product_catalog_api@localhost.png)
-
-### run the project
-
-- first install maven [steps](https://maven.apache.org/install.html)
-- use this command to run spring project `mvn spring-boot:run`
-
-### package this app
-
-- clean create jar `mvn clean install`
-- run this jar `java -jar <jar file name>`
-
-### project class diagram
-
-![class diagram](./images/product_catalog_api_class_diagram.png)
-
-
-### database sql 
-
-```sql
-create table category
-(
-    id   bigint       not null
-        primary key,
-    name varchar(255) null
-);
-
-create table customer
-(
-    id       bigint       not null
-        primary key,
-    email    varchar(255) null,
-    password varchar(255) null
-);
-
-create table hibernate_sequence
-(
-    next_val bigint null
-);
-
-create table order_item
-(
-    id       bigint       not null
-        primary key,
-    image    varchar(255) null,
-    name_ar  varchar(255) null,
-    name_en  varchar(255) null,
-    price    bigint       null,
-    quantity bigint       null
-);
-
-create table orders
-(
-    id bigint not null
-        primary key
-);
-
-create table customer_orders
-(
-    customer_id bigint not null,
-    orders_id   bigint not null,
-    constraint UK_4m0sjmnfkb97mpn89e5xnw3v3
-        unique (orders_id),
-    constraint FK39sxykqbp8npv4p80lt3p23i8
-        foreign key (orders_id) references orders (id),
-    constraint FK7ntkighomv9fa5287rev8a3wy
-        foreign key (customer_id) references customer (id)
-);
-
-create table orders_order_items
-(
-    order_id       bigint not null,
-    order_items_id bigint not null,
-    constraint UK_9d47gapmi35omtannusv6btu3
-        unique (order_items_id),
-    constraint FK3l8rktw0f4w5t6tift31e2d7c
-        foreign key (order_id) references orders (id),
-    constraint FK7nw03p9mxq154wvbsonaq0qrw
-        foreign key (order_items_id) references order_item (id)
-);
-
-create table product
-(
-    id                bigint       not null
-        primary key,
-    image             varchar(255) null,
-    limit_quantity    bigint       null,
-    name_ar           varchar(255) null,
-    name_en           varchar(255) null,
-    num_of_sold_units bigint       null,
-    price             bigint       null,
-    quantity          bigint       null
-);
-
-create table category_products
-(
-    category_id bigint not null,
-    products_id bigint not null,
-    constraint UK_fdnk3mk70n1rc08vw1cj65kqw
-        unique (products_id),
-    constraint FKe9irm5a62pmolhvr468cip3v3
-        foreign key (products_id) references product (id),
-    constraint FKqwkr0l0xbluhhkm7s0c1tg8en
-        foreign key (category_id) references category (id)
-);
-
-
-```
+## 👤 Author  
+**Wilson Munyaneza**  
+🔗 [GitHub](https://github.com/munyaneza-w)  
